@@ -26,7 +26,7 @@ class RandomZippingDataset(Dataset[Tuple[T_co]]):
 
     def __getitem__(self, index: int) -> Tuple[T_co]:
         sample = tuple(
-            dataset[torch.randint(high=len(self), size=(1,)).item()]
+            dataset[torch.randint(high=len(dataset), size=(1,)).item()]
             for dataset in self.datasets
         )
         return sample

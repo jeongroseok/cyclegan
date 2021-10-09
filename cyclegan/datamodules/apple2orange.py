@@ -24,6 +24,7 @@ class Apple2OrangeDataModule(VisionDataModule):
         pin_memory: bool = False,
         drop_last: bool = False,
         persistent_workers: bool = True,
+        max_samples: Optional[int] = None,
         *args: any,
         **kwargs: any,
     ) -> None:
@@ -38,6 +39,7 @@ class Apple2OrangeDataModule(VisionDataModule):
         self.pin_memory = pin_memory
         self.drop_last = drop_last
         self.persistent_workers = persistent_workers
+        self.max_samples = max_samples
 
     def prepare_data(self, *args: any, **kwargs: any) -> None:
         pass
@@ -57,10 +59,14 @@ class Apple2OrangeDataModule(VisionDataModule):
             )
 
             a_train = ImageDataset(
-                os.path.join(dataset_dir, "trainA"), train_transforms
+                os.path.join(dataset_dir, "trainA"),
+                train_transforms,
+                max_samples=self.max_samples,
             )
             b_train = ImageDataset(
-                os.path.join(dataset_dir, "trainB"), train_transforms
+                os.path.join(dataset_dir, "trainB"),
+                train_transforms,
+                max_samples=self.max_samples,
             )
             self.dataset_train = RandomZippingDataset([a_train, b_train], True)
 

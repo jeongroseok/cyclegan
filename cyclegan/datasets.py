@@ -73,11 +73,13 @@ class ImageDataset(Dataset[torch.Tensor]):
         transform: Optional[Callable] = None,
         loader: Callable[[str], Any] = default_loader,
         is_valid_file: Optional[Callable[[str], bool]] = None,
+        max_samples: Optional[int] = None
     ) -> None:
         super().__init__()
         self.root = root
         self.transform = transform
         self.loader = loader
+        self.max_samples = max_samples
 
         self.samples = make_dataset(
             root,
@@ -93,4 +95,6 @@ class ImageDataset(Dataset[torch.Tensor]):
         return sample
 
     def __len__(self) -> int:
+        if self.max_samples is not None:
+            return self.max_samples
         return len(self.samples)
